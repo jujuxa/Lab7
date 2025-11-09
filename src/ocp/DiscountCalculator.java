@@ -1,18 +1,20 @@
 package ocp;
 
-/**
- * Подсказка:
- * Каждый раз, когда появляется новый тип пользователя (например, student или employee),
- * придётся лезть в код метода и добавлять новое условие if.
- * Вспомните задание из предыдущих лабораторных с фигурами.
- */
+import java.util.Map;
+
 public class DiscountCalculator {
+    private final Map<String, DiscountStrategy> strategies;
+
+    public DiscountCalculator() {
+        strategies = Map.of(
+                "regular", new RegularDiscount(),
+                "vip", new VipDiscount(),
+                "super_vip", new SuperVipDiscount()
+        );
+    }
+
     public double calculateDiscount(String userType, double price) {
-        return switch (userType) {
-            case "regular" -> price * 0.05;
-            case "vip" -> price * 0.1;
-            case "super_vip" -> price * 0.2;
-            default -> 0.0;
-        };
+        DiscountStrategy strategy = strategies.getOrDefault(userType, p -> 0.0);
+        return strategy.calculate(price);
     }
 }

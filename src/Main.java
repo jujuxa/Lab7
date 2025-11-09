@@ -4,13 +4,15 @@ import lsp.Sparrow;
 import ocp.DiscountCalculator;
 import srp.ReportManager;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
         // ---------- S ----------
-        ReportManager manager = new ReportManager(List.of(5, 10, 15, 20));
+        List<Integer> data = Arrays.asList(5,10,15,20);
+        ReportManager manager = new ReportManager(data,new srp.ConsoleOutput(), new srp.FileSaver());
         manager.generateReport();
 
         // ---------- O ----------
