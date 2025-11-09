@@ -22,12 +22,15 @@ public class Main {
         System.out.println("Super VIP: " + calculator.calculateDiscount("super_vip", 1000));
 
         // ---------- L ----------
-        displayBird(new Sparrow());
-        displayBird(new Penguin());     // Здесь будет исключение
+        Sparrow sparrow = new Sparrow();
+        Penguin penguin = new Penguin();
+
+        sparrow.eat();
+        sparrow.fly();
+
+        penguin.eat();
+        penguin.fly();
     }
 
-    public static void displayBird(Bird bird) {
-        bird.eat();
-        bird.fly();
-    }
+
 }

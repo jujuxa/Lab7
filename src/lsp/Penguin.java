@@ -6,8 +6,7 @@ public class Penguin extends Bird {
         System.out.println("<звуки пингвина>, ем рыбу, <еще звуки пингвина>");
     }
 
-    @Override
     public void fly() {
-        throw new UnsupportedOperationException("Пингвины не летают АЛЛЕ");
+        System.out.println("Пингвины не умеют летать.");
     }
 }
