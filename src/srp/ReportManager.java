@@ -1,56 +1,38 @@
 package srp;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 
-/**
- * Подсказка:
- * если нужно изменить способ хранения, формат отчёта, или формулу вычисления — придётся менять один и тот же класс.
- */
 public class ReportManager {
 
-    private final List<Integer> data;
+    private final DataCalculator calculator;
+    private final ReportOutput output;
+    private final ReportSaver saver;
 
-    public ReportManager(List<Integer> data) {
-        this.data = data;
+    public ReportManager(List<Integer> data, ReportOutput output, ReportSaver saver) {
+        this.calculator = new DataCalculator(data);
+        this.output = output;
+        this.saver = saver;
     }
 
     public void generateReport() {
-        System.out.println("=== Report ===");
-        int sum = calculateSum();
-        double avg = calculateAverage();
-        System.out.println("Sum: " + sum);
-        System.out.println("Average: " + avg);
-        System.out.println("Generated at: " + LocalDateTime.now());
+        int sum = calculator.calculateSum();
+        double avg = calculator.calculateAverage();
+        String timestamp = LocalDateTime.now().toString();
 
-        saveToFile(sum, avg);
-    }
+        StringBuilder consoleReport = new StringBuilder();
+        consoleReport.append("=== Report ===\n");
+        consoleReport.append("Sum: ").append(sum).append("\n");
+        consoleReport.append("Average: ").append(avg).append("\n");
+        consoleReport.append("Generated at: ").append(timestamp).append("\n");
+        output.print(consoleReport.toString());
 
-    private int calculateSum() {
-        int sum = 0;
-        for (int n : data) {
-            sum += n;
-        }
-        return sum;
-    }
-
-    private double calculateAverage() {
-        if (data.isEmpty()) return 0;
-        return (double) calculateSum() / data.size();
-    }
-
-    private void saveToFile(int sum, double avg) {
-        try (FileWriter writer = new FileWriter("report.txt")) {
-            writer.write("=== Report ===\n");
-            writer.write("Sum: " + sum + "\n");
-            writer.write("Average: " + avg + "\n");
-            writer.write("Generated at: " + LocalDateTime.now() + "\n");
-            System.out.println("Report saved to report.txt");
-        } catch (IOException e) {
-            System.out.println("Error writing report file: " + e.getMessage());
-        }
+        StringBuilder fileReport = new StringBuilder();
+        fileReport.append("=== Report ===\n");
+        fileReport.append("Sum: ").append(sum).append("\n");
+        fileReport.append("Average: ").append(avg).append("\n");
+        fileReport.append("Generated at: ").append(timestamp).append("\n");
+        saver.save(fileReport.toString());
     }
 }
